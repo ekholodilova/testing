@@ -10,8 +10,8 @@ public class GroupCreationTest extends TestBase {
     initGroupCreation();
     GroupData group = new GroupData();    //local variable
     group.name = "group name 1"; //filling data by manually
-    group.header = "header 1"; //filling data by manually
-    group.footer = "footer 1"; //filling data by manually
+    group.header = "header 1"; 
+    group.footer = "footer 1"; 
 	fillGroupForm(group);
     submitGroupCreation();
     returnToGroupPage();
