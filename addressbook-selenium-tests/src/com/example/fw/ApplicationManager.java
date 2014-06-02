@@ -8,7 +8,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class ApplicationManager {
 	
-	public static WebDriver driver;
+	public WebDriver driver;
 	public String baseUrl;
 
 	private NavigationHelper navigationHelper;

@@ -38,7 +38,6 @@ public class GroupHelper extends HelperBase {
 		click(By.xpath("//input[@name='selected[]'][" + index + "]"));
 	}
 
-
 	public void initGroupModification(int index) {
 		selectGroupByIndex(index);
 		click(By.name("edit"));
