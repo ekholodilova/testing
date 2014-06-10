@@ -1,10 +1,29 @@
 package com.example.fw;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.SearchContext;
+import org.openqa.selenium.WebElement;
 
 import com.example.tests.ContactData;
+import com.example.tests.GroupData;
 
 public class ContactHelper extends HelperBase {
+	
+	public enum FormButtons {
+		DETAILS(6), EDIT(7), VCARD(8), GOOGLEMAPS(9);
+		
+		private int code;
+		
+		private FormButtons(int c){
+			code = c;
+		}
+		public int getCode(){
+			return code;
+		}
+	}
 
 	public ContactHelper(ApplicationManager manager) {
 		super(manager);
@@ -52,19 +71,11 @@ public class ContactHelper extends HelperBase {
 	}
 
 	public void selectContactByIndex(int indexRow) {
-	click(By.xpath("//tr[" +(indexRow+1) + "]" +  "/td/input[@name='selected[]']"));
+	click(By.xpath("//tr[" +(indexRow+2) + "]" +  "/td/input[@name='selected[]']"));
 	}
 
-	/*
- 	The indexTable parameter may have the following value:
-   	indexTable=6  if user click on "Details"
-   	indexTable=7  if user click on "Edit"
-   	indexTable=8  if user click on "vCard"
-   	indexTable=9  if user click on "Google Maps"
-   	indexTable=10 if user click on "Guessed homepage (www.mail.ru)"
- */
 	public void identifierContactByIndexes(int indexRow, int indexTable) {
-	click(By.xpath("//tr[" +(indexRow+1) + "]" +  "/td[" + indexTable+ "]/a/img"));
+	click(By.xpath("//tr[" +(indexRow+2) + "]" +  "/td[" + indexTable+ "]/a/img"));
 	}
 
 	public void selectButtonByValue(String buttonName) {
@@ -75,6 +86,60 @@ public class ContactHelper extends HelperBase {
 	selectContactByIndex(indexRow);
 	identifierContactByIndexes(indexRow,indexTable);
 	}
+	
+	public List<ContactData> getContacts() {
+	    List<ContactData> contacts = new ArrayList<ContactData>();
+	    List<WebElement> checkboxes = driver.findElements(By.name("selected[]"));
+	    int i = 2;
+	    for (WebElement checkbox : checkboxes) {
+	    	ContactData contact = new ContactData();
+	    	String title = checkbox.getAttribute("title");
+	    	String fullname = title.substring("Select (".length(),  title.length() - ")".length());
+	    	
+	    	//initial values
+	    	contact.firstname = "";
+	    	contact.lastname = "";
+	    	contact.email = "";
+	    	contact.home = "";
+	    	
+	    	String[] names = null;
+	    	if(fullname != null) {
+	    		names = fullname.split(" ");
+	    	} 
+	    	if(names.length > 0) {
+	    		contact.firstname = names[0];
+	    	}
+	    	if(names.length > 1) {
+	    		contact.lastname = names[1];
+	    	}
+	    	
+	    	String email = checkbox.getAttribute("accept");
+	    	if (email.indexOf(";") != -1) {
+	    		contact.email = email.substring(0,email.indexOf(";"));
+	    	}
+	    	//System.out.println("GETTING CONTACNTS: " + contact.firstname +" "+contact.lastname+" "+contact.email);
+	    	WebElement column =  driver.findElement(By.xpath("//tr[" + i +"]/td[" + 5 +"]"));
+	    	if (column != null) {
+		    	contact.home = column.getText();
+		    	
+		    //There is bug in home page: delete spaces. Therefore we delete all spaces for compare
+	
+		    contact.home = contact.home.trim();
+		    	
+		    if (contact.home.indexOf(ContactData.SPACE) != -1) {
+		    	contact.home.replace(ContactData.SPACE, ContactData.NO_SPACE);
+		    	}
+
+	    	}
+	    	
+	    	i++;
+	    	
+	    	contacts.add(contact);
+	    }
+	    
+			return contacts;
+			
+		}
 
 }
 

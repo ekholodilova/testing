@@ -1,42 +1,49 @@
 package com.example.tests;
 
+import static org.testng.Assert.assertEquals;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.testng.annotations.Test;
+
+import com.example.fw.ContactHelper.FormButtons;
 
 public class ContactModificationTests extends TestBase {
 	
 	@Test
 	public void modifySomeContact() {
 		app.getNavigationHelper().openMainPage();
+		
+		//save old state
+		 List<ContactData> oldList = app.getContactHelper().getContacts();
+		
 		app.getNavigationHelper().gotoHomePage();
-		app.getContactHelper().initContactModification(1,7);
+		
+	    //actions
+		app.getContactHelper().initContactModification(0, FormButtons.EDIT.getCode());
 		ContactData contact = new ContactData();
-	    contact.firstname = "Test"; 
-	    contact.lastname = "Test"; 
-	    contact.email = "test@mail.ru"; 
-	    contact.email2 = "test@gmail.com"; 
+	    contact.firstname = "fgh"; 
+	    contact.lastname = "fgh";
+	    contact.home = "(925)1111111"; 
+	    contact.email = "fgh@mail.ru"; 
+	    contact.email2 = "fgh@gmail.com"; 
 	    contact.bday = "1"; 
-	    contact.bmonth = "June"; 
-	    contact.byear = "2000";
+	    contact.bmonth = "July"; 
+	    contact.byear = "1982";
 	    app.getContactHelper().fillContactForm( contact);
 		app.getContactHelper().selectButtonByValue("Update");
 	    app.getContactHelper().returnToHomePage();
-	    
-	    
-	    //Modify via Details
-	    app.getContactHelper().initContactModification(2,6);
-	    app.getContactHelper().modifyContactCreation();
-		ContactData contact1 = new ContactData();
-	    contact1.firstname = "Test1"; 
-	    contact1.lastname = "Test1"; 
-	    contact1.email = "test1@mail.ru"; 
-	    contact1.email2 = "test1@gmail.com"; 
-	    contact1.bday = "6"; 
-	    contact1.bmonth = "June"; 
-	    contact1.byear = "2000";
-	    app.getContactHelper().fillContactForm( contact1);
-		app.getContactHelper().selectButtonByValue("Update");
-	    app.getContactHelper().returnToHomePage();
-	    
-	}
+		   
+	    //save new state
+		List<ContactData> newList = app.getContactHelper().getContacts();
+	  
+	    //compare states
+	    oldList.remove(0);
+	    oldList.add(contact);
+	    Collections.sort(oldList);
+	    Collections.sort(newList);
+	    assertEquals(newList, oldList);
+	  }
 }
  

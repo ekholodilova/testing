@@ -1,6 +1,8 @@
 package com.example.tests;
 
-public class ContactData {
+import org.openqa.selenium.WebElement;
+
+public class ContactData implements Comparable<ContactData>{
 	public String firstname;
 	public String lastname;
 	public String address;
@@ -15,6 +17,8 @@ public class ContactData {
 	public String newgroup;
 	public String address2;
 	public String phone2;
+    public static final String SPACE = " ";
+    public static final String NO_SPACE = "";
 
 	public ContactData() {
 	}
@@ -35,4 +39,57 @@ public class ContactData {
 		this.address2 = address2;
 		this.phone2 =phone2;
 		}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		//result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ContactData other = (ContactData) obj;
+		if (!other.getStringViewForCompare().equalsIgnoreCase(this.getStringViewForCompare()))
+			return false;
+		return true;
+	}
+	
+	
+	protected String getStringViewForCompare() {
+		StringBuffer sb = new StringBuffer("");
+		sb.append(this.firstname);
+		sb.append(",");
+		sb.append(this.lastname);
+		sb.append(",");
+		sb.append(this.email);
+		sb.append(",");
+		if (this.home != null) {
+			sb.append(this.home.replace(SPACE, NO_SPACE));
+		} else {
+			sb.append(this.home);
+		}
+			
+		return sb.toString();  
+	}
+
+	@Override
+	public String toString() {
+		return "GroupData [firstname=" + firstname + ", lastname=" + lastname + ", email="
+				+ email + ", home=" + home + "]";
+	}
+
+	@Override
+	public int compareTo(ContactData other) {
+		return this.getStringViewForCompare().toLowerCase().compareTo(other.getStringViewForCompare().toLowerCase());
+	}
 }
+
+

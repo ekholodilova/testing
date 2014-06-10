@@ -27,7 +27,6 @@ public class GroupCreationTest extends TestBase {
     
     //compare states
     oldList.add(group);
-    //System.out.println("BEFORE:" + oldList);
     Collections.sort(oldList);
     assertEquals(newList, oldList);
   }
