@@ -1,8 +1,6 @@
 package com.example.tests;
 
-import org.openqa.selenium.WebElement;
-
-public class ContactData implements Comparable<ContactData>{
+public class ContactData implements Comparable<ContactData> {
 	public String firstname;
 	public String lastname;
 	public String address;
@@ -17,13 +15,16 @@ public class ContactData implements Comparable<ContactData>{
 	public String newgroup;
 	public String address2;
 	public String phone2;
-    public static final String SPACE = " ";
-    public static final String NO_SPACE = "";
+	public static final String SPACE = " ";
+	public static final String NO_SPACE = "";
 
 	public ContactData() {
 	}
-	
-	public ContactData(String firstname, String lastname, String address,String home,String mobile,String work,String email,String email2,String bday,String bmonth,String byear,String newgroup,String address2,String phone2) {
+
+	public ContactData(String firstname, String lastname, String address,
+			String home, String mobile, String work, String email,
+			String email2, String bday, String bmonth, String byear,
+			String newgroup, String address2, String phone2) {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.address = address;
@@ -37,14 +38,13 @@ public class ContactData implements Comparable<ContactData>{
 		this.byear = byear;
 		this.newgroup = newgroup;
 		this.address2 = address2;
-		this.phone2 =phone2;
-		}
-	
+		this.phone2 = phone2;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		//result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -57,12 +57,12 @@ public class ContactData implements Comparable<ContactData>{
 		if (getClass() != obj.getClass())
 			return false;
 		ContactData other = (ContactData) obj;
-		if (!other.getStringViewForCompare().equalsIgnoreCase(this.getStringViewForCompare()))
+		if (!other.getStringViewForCompare().equalsIgnoreCase(
+				this.getStringViewForCompare()))
 			return false;
 		return true;
 	}
-	
-	
+
 	protected String getStringViewForCompare() {
 		StringBuffer sb = new StringBuffer("");
 		sb.append(this.firstname);
@@ -76,20 +76,19 @@ public class ContactData implements Comparable<ContactData>{
 		} else {
 			sb.append(this.home);
 		}
-			
-		return sb.toString();  
+
+		return sb.toString();
 	}
 
 	@Override
 	public String toString() {
-		return "GroupData [firstname=" + firstname + ", lastname=" + lastname + ", email="
-				+ email + ", home=" + home + "]";
+		return "GroupData [firstname=" + firstname + ", lastname=" + lastname
+				+ ", email=" + email + ", home=" + home + "]";
 	}
 
 	@Override
 	public int compareTo(ContactData other) {
-		return this.getStringViewForCompare().toLowerCase().compareTo(other.getStringViewForCompare().toLowerCase());
+		return this.getStringViewForCompare().toLowerCase()
+				.compareTo(other.getStringViewForCompare().toLowerCase());
 	}
 }
-
-
