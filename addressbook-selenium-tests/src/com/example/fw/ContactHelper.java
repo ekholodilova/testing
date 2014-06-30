@@ -1,12 +1,10 @@
 package com.example.fw;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.example.tests.ContactData;
+import com.example.utils.SortedListOf;
 
 public class ContactHelper extends HelperBase {
 
@@ -14,6 +12,10 @@ public class ContactHelper extends HelperBase {
 	private static final int EMAIL_COLUMN = 4;
 	private static final int LAST_NAME_COLUMN = 3;
 	private static final int FIRST_NAME_COLUMN = 2;
+	public static boolean CREATION = true;
+	public static boolean MODIFICATION = true;
+	private SortedListOf<ContactData> cachedContacts;
+
 
 	public enum FormButtons {
 		DETAILS(6), EDIT(7), VCARD(8), GOOGLEMAPS(9);
@@ -28,93 +30,153 @@ public class ContactHelper extends HelperBase {
 			return code;
 		}
 	}
+	
+	/*public SortedListOf<ContactData> getContacts() {
+		if (cachedContacts == null) {
+			cachedContacts = rebuildContactCache();
+		}
+		return cachedContacts;
+	}
+	
+	private SortedListOf<ContactData> rebuildContactCache() {
+		SortedListOf<ContactData> cachedContacts = new SortedListOf<ContactData>();
+		*/
+	
+	public SortedListOf<ContactData> getContacts() {
+		if (cachedContacts == null){
+			rebuildCache();	
+		}
+		return cachedContacts;	
+	}
 
+
+	private void rebuildCache() {
+		cachedContacts = new SortedListOf<ContactData>();
+		manager.navigateTo().mainPage();
+		int i = 2;
+		int total = findElements(By.name("selected[]")).size();
+		while (i < (total + 2)) {
+			// TODO change lastname and firstname initialization when issue #XXX would be fixed
+			ContactData contact = new ContactData().withFirstName(getContactAttributeValue(i, LAST_NAME_COLUMN))
+					.withLastName(getContactAttributeValue(i, FIRST_NAME_COLUMN))
+					.withEmail(getContactAttributeValue(i, EMAIL_COLUMN))
+					.withHome(getContactAttributeValue(i, HOME_COLUMN));
+
+			//remove spaces
+			contact.trimHome();
+			cachedContacts.add(contact);
+			i++;
+		}
+	}
+	
+	public ContactHelper createContact(ContactData contact) {
+		manager.navigateTo().contactAddNewPage();
+		fillContactForm(contact,CREATION);
+		submitContactCreation();
+		returnToHomePage();
+		rebuildCache();
+		return this;		
+	}
+	
+	public ContactHelper deleteContact(int index, int indexTable) {
+		selectContactByIndex(index);
+		identifierContactByIndexes(index, indexTable);
+		selectButtonByValue("Delete");
+		returnToHomePage();
+		rebuildCache();
+		return this;
+
+	}
+	
+	public ContactHelper modifyContact(int index,ContactData  contact) {
+		manager.navigateTo().mainPage();
+		initContactModification(index, FormButtons.EDIT.getCode());
+		fillContactForm(contact,MODIFICATION);
+		selectButtonByValue("Update");
+		returnToHomePage();
+		rebuildCache();
+		return this;
+	}
+
+	//================================================================================
+	
 	public ContactHelper(ApplicationManager manager) {
 		super(manager);
 	}
 
-	public void returnToHomePage() {
+	public ContactHelper returnToHomePage() {
 		click(By.linkText("home page"));
+		return this;
 	}
 
-	public void initContactCreation() {
+	public ContactHelper initContactCreation() {
 		click(By.name("add new"));
+		return this;
 	}
 
-	public void fillContactForm(ContactData contact) {
-		type(By.name("firstname"), contact.firstname);
-		type(By.name("lastname"), contact.lastname);
-		type(By.name("address"), contact.address);
-		type(By.name("home"), contact.home);
-		type(By.name("mobile"), contact.mobile);
-		type(By.name("work"), contact.work);
-		type(By.name("email"), contact.email);
-		type(By.name("email2"), contact.email2);
-		selectByText(By.name("bday"), contact.bday);
-		selectByText(By.name("bmonth"), contact.bmonth);
-		type(By.name("byear"), contact.byear);
-		selectByText(By.name("new_group"), contact.newgroup);
-		type(By.name("address2"), contact.address2);
-		type(By.name("phone2"), contact.phone2);
+	public ContactHelper fillContactForm(ContactData contact, boolean formType ) {
+		type(By.name("firstname"), contact.getFirstname());
+		type(By.name("lastname"), contact.getLastname());
+		type(By.name("address"), contact.getAddress());
+		type(By.name("home"), contact.getHome());
+		type(By.name("mobile"), contact.getMobile());
+		type(By.name("work"), contact.getWork());
+		type(By.name("email"), contact.getEmail1());
+		type(By.name("email2"), contact.getEmail2());
+		selectByText(By.name("bday"), contact.getBday());
+		selectByText(By.name("bmonth"), contact.getBmonth());
+		type(By.name("byear"), contact.getByear());
+		if (formType == CREATION) {
+			selectByText(By.name("new_group"), contact.newgroup);
+		} else {
+			if (findElements(By.name("new group")).size() != 0) {
+				throw new Error ("Group Selector exists in contact modification form");
+			}
+		}
+			
+		//selectByText(By.name("new_group"), contact.newgroup);
+		type(By.name("address2"), contact.getAddress2());
+		type(By.name("phone2"), contact.getPhone2());
+		return this;
 	}
 
-	public void submitContactCreation() {
+	public ContactHelper submitContactCreation() {
 		click(By.name("submit"));
+		cachedContacts = null;
+		return this;
 	}
 
-	public void modifyContactCreation() {
+	public ContactHelper modifyContactCreation() {
 		click(By.name("modifiy"));
+		cachedContacts = null;
+		return this;
 	}
 
-	public void deleteContact(int indexRow, int indexTable) {
-		selectContactByIndex(indexRow);
-		identifierContactByIndexes(indexRow, indexTable);
-		selectButtonByValue("Delete");
-
-	}
-
-	public void selectContactByIndex(int indexRow) {
+	
+	public ContactHelper selectContactByIndex(int indexRow) {
 		click(By.xpath("//tr[" + (indexRow + 2) + "]"
 				+ "/td/input[@name='selected[]']"));
+		return this;
 	}
 
-	public void identifierContactByIndexes(int indexRow, int indexTable) {
+	public ContactHelper identifierContactByIndexes(int indexRow, int indexTable) {
 		click(By.xpath("//tr[" + (indexRow + 2) + "]" + "/td[" + indexTable
 				+ "]/a/img"));
+		return this;
 	}
 
-	public void selectButtonByValue(String buttonName) {
+	public ContactHelper selectButtonByValue(String buttonName) {
 		click(By.xpath("//input[@value='" + buttonName + "']"));
+		return this;
 	}
 
-	public void initContactModification(int indexRow, int indexTable) {
+	public ContactHelper initContactModification(int indexRow, int indexTable) {
 		selectContactByIndex(indexRow);
 		identifierContactByIndexes(indexRow, indexTable);
+		return this;
 	}
 
-	public List<ContactData> getContacts() {
-		List<ContactData> contacts = new ArrayList<ContactData>();
-		int i = 2;
-		int total = findElements(By.name("selected[]")).size();
-		while (i < (total + 2)) {
-			ContactData contact = new ContactData();
-			// TODO change lastname and firstname initialization when issue #XXX
-			// would be fixed
-			contact.lastname = getContactAttributeValue(i, FIRST_NAME_COLUMN);
-			contact.firstname = getContactAttributeValue(i, LAST_NAME_COLUMN);
-			contact.email = getContactAttributeValue(i, EMAIL_COLUMN);
-			contact.home = getContactAttributeValue(i, HOME_COLUMN);
-			//remove spaces
-			contact.home = contact.home.trim();
-			if (contact.home.indexOf(ContactData.SPACE) != -1) {
-				contact.home.replace(ContactData.SPACE, ContactData.NO_SPACE);
-			}
-			contacts.add(contact);
-			i++;
-		}
-		return contacts;
-	}
-
+	
 	private String getContactAttributeValue(int row, int column) {
 		WebElement element = findElement(By.xpath("//tr[" + row + "]/td["
 				+ column + "]"));
