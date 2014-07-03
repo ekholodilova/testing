@@ -9,14 +9,16 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 
+
 import com.example.fw.ApplicationManager;
+import com.example.utils.RandomGenerateUtils;
 
 public class TestBase {
 
 	protected static ApplicationManager app = null; // link to
 													// ApplicationManager
 
-	private static String[] names = new String[] { "John", "Ann", "Kieth",
+	/*private static String[] names = new String[] { "John", "Ann", "Kieth",
 			"Jens", "Aric", "Boas", "David", "Martin", "Linda", "Leon" };
 	private static String[] lastnames = new String[] { "Smith", "Abstract",
 			"Bull", "Fat", "Thin", "Uils", "Braun", "Lind", "Lame", "Telemann" };
@@ -26,6 +28,7 @@ public class TestBase {
 	private static String[] adress = new String[] { "Rose", "Direct", "Dance",
 			"Coco", "Big", "Little", "Flower", "Shot", "Center", "Student",
 			"Varna", "Fish" };
+  */
 
 	@BeforeTest
 	public synchronized void setUp() throws Exception {
@@ -41,22 +44,23 @@ public class TestBase {
 
 	}
 
-	@DataProvider
-	public Iterator<Object[]> randomValidGroupGenerator() {
-		List<Object[]> list = new ArrayList<Object[]>();
-		for (int i = 0; i < 5; i++) {
-			GroupData group = new GroupData()
-			 .withName(generateRandomString())
-			 .withHeader(generateRandomString())
-			 .withFooter(generateRandomString());
-			list.add(new Object[] { group });
-		}
-		return list.iterator();
-
+	public static  List<Object[]> wrapGroupForDataProvider(List<GroupData> groups) {
+        List<Object[]> list = new ArrayList<Object[]>();
+        for (GroupData group : groups) {
+        	list.add(new Object[]{group});
+        }
+		return list;
+	}
+	
+	public static  List<Object[]> wrapContactForDataProvider(List<ContactData> contacts) {
+        List<Object[]> list = new ArrayList<Object[]>();
+        for (ContactData contact : contacts) {
+        	list.add(new Object[]{contact});
+        }
+		return list;
 	}
 
-
-	@DataProvider
+	/*@DataProvider
 	public Iterator<Object[]> randomValidContactGenerator() {
 		List<Object[]> list = new ArrayList<Object[]>();
 
@@ -76,7 +80,7 @@ public class TestBase {
 				.withBday(String.valueOf(rnd.nextInt(29)))
 				.withBmonth(generateRandomMonthString())
 				.withByear(generateRandomYear())
-				.withAddress2(generateRandomString() + ", " + rnd.nextInt(100))
+				.withAddress2(RandomGenerateUtils.generateRandomString() + ", " + rnd.nextInt(100))
 				.withPhone2(generateRandomSetNumber(7));
 			list.add(new Object[] { contact });
 		}
@@ -92,6 +96,7 @@ public class TestBase {
 			return "test" + rnd.nextInt();
 		}
 	}
+	
 
 	public String generateRandomFirstNameString() {
 		Random random = new Random();
@@ -154,6 +159,6 @@ public class TestBase {
 			buf.append(nextNumber);
 		}
 		return buf.toString();
-	}
+	}*/
 
 }
