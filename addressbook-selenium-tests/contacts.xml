@@ -1,0 +1,53 @@
+<list>
+  <contact>
+    <firstname>Jens</firstname>
+    <lastname>Uils</lastname>
+    <address>Student street, 94</address>
+    <home>1994122</home>
+    <mobile>+79217918161</mobile>
+    <work>2792784</work>
+    <email1>Jens.Uils@mail.ru</email1>
+    <email2>Jens.Uils@mail.ru</email2>
+    <bday>3</bday>
+    <bmonth>October</bmonth>
+    <byear>1992</byear>
+    <address2>test-1827343019, 76</address2>
+    <phone2>3532464</phone2>
+    <emaildoman1>@mail.ru</emaildoman1>
+    <emaildoman2>@mail.ru</emaildoman2>
+  </contact>
+  <contact>
+    <firstname>Ann</firstname>
+    <lastname>Fat</lastname>
+    <address>Rose avenue, 68</address>
+    <home>8786267</home>
+    <mobile>+79212784771</mobile>
+    <work>2942175</work>
+    <email1>Ann.Fat@mail.ru</email1>
+    <email2>Ann.Fat@mail.ru</email2>
+    <bday>24</bday>
+    <bmonth>October</bmonth>
+    <byear>1970</byear>
+    <address2>test1527072296, 56</address2>
+    <phone2>8641873</phone2>
+    <emaildoman1>@mail.ru</emaildoman1>
+    <emaildoman2>@mail.ru</emaildoman2>
+  </contact>
+  <contact>
+    <firstname>Boas</firstname>
+    <lastname>Uils</lastname>
+    <address>Center avenue, 62</address>
+    <home>1381831</home>
+    <mobile>+79216613532</mobile>
+    <work>3135122</work>
+    <email1>Boas.Uils@gmail.com</email1>
+    <email2>Boas.Uils@mail.ru</email2>
+    <bday>21</bday>
+    <bmonth>July</bmonth>
+    <byear>1965</byear>
+    <address2>test1655936872, 92</address2>
+    <phone2>4646141</phone2>
+    <emaildoman1>@gmail.com</emaildoman1>
+    <emaildoman2>@mail.ru</emaildoman2>
+  </contact>
+</list>

@@ -1,7 +1,8 @@
 package com.example.tests;
 
 import static org.junit.Assert.assertThat;
-import static com.example.tests.ContactDataGenerator.loadContactsFromCsvFile;
+//import static com.example.tests.ContactDataGenerator.loadContactsFromCsvFile;
+import static com.example.tests.ContactDataGenerator.loadContactsFromXmlFile;
 import static org.hamcrest.Matchers.*;
 
 import java.io.File;
@@ -17,7 +18,7 @@ public class ContactCreationTest extends TestBase {
 		
 		@DataProvider
 		public Iterator<Object[]> contactsFromFile() throws IOException {
-			return wrapContactForDataProvider(loadContactsFromCsvFile(new File("contact.txt"))).iterator();
+			return wrapContactForDataProvider(loadContactsFromXmlFile(new File("contacts.xml"))).iterator();
 		}
 		
 		@Test(dataProvider = "contactsFromFile")

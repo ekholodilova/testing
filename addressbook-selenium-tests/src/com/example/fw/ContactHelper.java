@@ -59,7 +59,7 @@ public class ContactHelper extends HelperBase {
 			// TODO change lastname and firstname initialization when issue #XXX would be fixed
 			ContactData contact = new ContactData().withFirstName(getContactAttributeValue(i, LAST_NAME_COLUMN))
 					.withLastName(getContactAttributeValue(i, FIRST_NAME_COLUMN))
-					.withEmail(getContactAttributeValue(i, EMAIL_COLUMN))
+					.withEmail1(getContactAttributeValue(i, EMAIL_COLUMN))
 					.withHome(getContactAttributeValue(i, HOME_COLUMN));
 
 			//remove spaces

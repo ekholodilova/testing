@@ -1,3 +1,3 @@
-Kieth;Bull;Little avenue, 22;6635271;+79115691121;6264585;Kieth.Bull@mail.ru;Kieth.Bull@gmail.com;15;November;2002;, 13;8851851;!
-Kieth;Smith;Big street, 13;5824861;+79629818359;4933711;Kieth.Smith@mail.ru;Kieth.Smith@mail.ru;14;October;1972;test769108968, 93;6561282;!
-Boas;Braun;Coco street, 65;2461516;+79623283448;4788451;Boas.Braun@mail.ru;Boas.Braun@mail.ru;21;February;2004;test-382796811, 17;1125651;!
+Boas;Smith;Little street, 44;4724184;+79218913554;1137174;Boas.Smith@mail.ru;Boas.Smith@gmail.com;2;February;2001;test1195068122, 54;4723882;!
+Boas;Fat;Shot avenue, 30;4156671;+79624111523;8346877;Boas.Fat@mail.ru;Boas.Fat@gmail.com;26;August;1980;test-1483055769, 43;1814399;!
+John;Lame;Little avenue, 10;6473616;+79215247116;6998638;John.Lame@mail.ru;John.Lame@mail.ru;23;August;1993;test229872757, 52;9158684;!

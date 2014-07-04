@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.example.utils.RandomGenerateUtils;
+import com.thoughtworks.xstream.XStream;
 
 public class ContactDataGenerator {
 
@@ -38,10 +39,21 @@ public class ContactDataGenerator {
 	}
 }
 
-	private static void saveContactsToXmlvFile(List<ContactData> contacts, File file) {
-		// TODO Auto-generated method stub
-		
-	}
+	private static void saveContactsToXmlvFile(List<ContactData> contacts, File file) throws IOException  {
+		 XStream xstream = new XStream();
+		 xstream.alias("contact", ContactData.class);
+		 String xml = xstream.toXML(contacts);
+	     FileWriter writer = new FileWriter(file);
+	     writer.write(xml);
+	     writer.close();
+		}
+
+	public static  List<ContactData> loadContactsFromXmlFile(File file) {
+		  XStream xstream = new XStream();
+		  xstream.alias("contact", ContactData.class);
+		  xstream.fromXML(file);
+		return (List<ContactData>) xstream.fromXML(file);	
+		}
 
 	private static void saveContactsToCsvFile(List<ContactData> contacts, File file) throws IOException {
      FileWriter writer = new FileWriter(file);
@@ -70,8 +82,8 @@ public class ContactDataGenerator {
 			      .withHome(part[3])
 			      .withMobile(part[4])
 			      .withWork(part[5])
-			      .withEmailDomain1(part[6])
-			      .withEmailDomain2(part[7])
+			      .withEmail1(part[6])
+			      .withEmail2(part[7])
 			      .withBday(part[8])
 			      .withBmonth(part[9])
 			      .withByear(part[10])
@@ -97,7 +109,7 @@ public class ContactDataGenerator {
 				.withMobile(RandomGenerateUtils.generateRandomPhoneMobileNumber())
 				.withWork(RandomGenerateUtils.generateRandomSetNumber(7))
 				.withEmailDomain1(RandomGenerateUtils.generateRandomEmailDomain())
-				.withEmail(null) // if null - generate new using random domain
+				.withEmail1(null) // if null - generate new using random domain
 				.withEmailDomain2(RandomGenerateUtils.generateRandomEmailDomain())
 				.withEmail2(null)
 				.withBday(String.valueOf(rnd.nextInt(29)))

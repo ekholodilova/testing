@@ -15,7 +15,7 @@ public class ContactData implements Comparable<ContactData> {
 
 	private String mobile;
 	private String work;
-	private String email;
+	private String email1;
 	private String email2;
 	private String bday;
 	private String bmonth;
@@ -41,7 +41,7 @@ public class ContactData implements Comparable<ContactData> {
 		this.home = home;
 		this.mobile = mobile;
 		this.work = work;
-		this.email = email;
+		this.email1 = email;
 		this.email2 = email2;
 		this.bday = bday;
 		this.bmonth = bmonth;
@@ -79,7 +79,7 @@ public class ContactData implements Comparable<ContactData> {
 		sb.append(",");
 		sb.append(this.lastname);
 		sb.append(",");
-		sb.append(this.email);
+		sb.append(this.email1);
 		sb.append(",");
 		if (this.home != null) {
 			sb.append(this.home.replace(SPACE, NO_SPACE));
@@ -93,7 +93,7 @@ public class ContactData implements Comparable<ContactData> {
 	@Override
 	public String toString() {
 		return "GroupData [firstname=" + firstname + ", lastname=" + lastname
-				+ ", email=" + email + ", home=" + home + "]";
+				+ ", email=" + email1 + ", home=" + home + "]";
 	}
 
 	@Override
@@ -142,11 +142,11 @@ public class ContactData implements Comparable<ContactData> {
 		return this;
 	}
 
-	public ContactData withEmail(String anEmail) {
+	public ContactData withEmail1(String anEmail) {
 		if (anEmail != null) {
-			this.email = anEmail;
+			this.email1 = anEmail;
 		} else {
-			this.email = getEmail1();
+			this.email1 = createEmail1();
 		}
 		return this;
 	}
@@ -155,7 +155,7 @@ public class ContactData implements Comparable<ContactData> {
 		if (anEmail != null) {
 			this.email2 = anEmail;
 		} else {
-			this.email2 = getEmail2();
+			this.email2 = createEmail2();
 		}
 		return this;
 	}
@@ -185,11 +185,19 @@ public class ContactData implements Comparable<ContactData> {
 		return this;
 	}
 	
-	public String getEmail1() {
+	public String createEmail1() {
 		return  this.firstname + "." + this.lastname +"" + this.emaildoman1;
 	}
 	
+	public String getEmail1() {
+		return email1;
+	}
+
 	public String getEmail2() {
+		return email2;
+	}
+
+	public String createEmail2() {
 		return  this.firstname + "." + this.lastname +"" + this.emaildoman2;
 	}
 
@@ -231,6 +239,14 @@ public class ContactData implements Comparable<ContactData> {
 	public String getByear() {
 		return byear;
 	}
+	
+	public String getEmailDomain1() {
+		return emaildoman1;
+	}
+	
+	public String getEmailDomain2() {
+		return emaildoman2;
+	}
 
 	public String getAddress2() {
 		return address2;
@@ -239,6 +255,5 @@ public class ContactData implements Comparable<ContactData> {
 	public String getPhone2() {
 		return phone2;
 	}
-	
-	
+
 }

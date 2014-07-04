@@ -8,6 +8,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static com.example.tests.GroupDataGenerator.loadGroupsFromCsvFile;
+import static com.example.tests.GroupDataGenerator.loadGroupsFromXmlFile;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -17,7 +18,7 @@ public class GroupCreationTest extends TestBase {
 	
 	@DataProvider
 	public Iterator<Object[]> groupsFromFile() throws IOException {
-		return wrapGroupForDataProvider(loadGroupsFromCsvFile(new File("group.txt"))).iterator();
+		return wrapGroupForDataProvider(loadGroupsFromXmlFile(new File("groups.xml"))).iterator();
 	}
 
 	

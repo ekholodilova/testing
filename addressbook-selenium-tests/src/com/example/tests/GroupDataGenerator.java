@@ -7,9 +7,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.example.utils.RandomGenerateUtils;
+import com.thoughtworks.xstream.XStream;
 
 public class GroupDataGenerator {
 
@@ -38,11 +38,22 @@ public class GroupDataGenerator {
 	}
 }
 
-	private static void saveGroupsToXmlvFile(List<GroupData> groups, File file) {
-		// TODO Auto-generated method stub
-		
+	private static void saveGroupsToXmlvFile(List<GroupData> groups, File file) throws IOException  {
+	 XStream xstream = new XStream();
+	 xstream.alias("group", GroupData.class);
+	 String xml = xstream.toXML(groups);
+     FileWriter writer = new FileWriter(file);
+     writer.write(xml);
+     writer.close();
 	}
 
+	public static  List<GroupData> loadGroupsFromXmlFile(File file) {
+	  XStream xstream = new XStream();
+	  xstream.alias("group", GroupData.class);
+	  xstream.fromXML(file);
+	return (List<GroupData>) xstream.fromXML(file);	
+	}
+	
 	private static void saveGroupsToCsvFile(List<GroupData> groups, File file) throws IOException {
      FileWriter writer = new FileWriter(file);
 	 for (GroupData group : groups) {
