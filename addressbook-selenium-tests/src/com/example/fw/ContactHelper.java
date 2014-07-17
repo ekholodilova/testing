@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import com.example.tests.ContactData;
 import com.example.utils.SortedListOf;
 
-public class ContactHelper extends HelperBase {
+public class ContactHelper extends WebDriverHelperBase {
 
 	private static final int HOME_COLUMN = 5;
 	private static final int EMAIL_COLUMN = 4;
@@ -14,7 +14,8 @@ public class ContactHelper extends HelperBase {
 	private static final int FIRST_NAME_COLUMN = 2;
 	public static boolean CREATION = true;
 	public static boolean MODIFICATION = true;
-	private SortedListOf<ContactData> cachedContacts;
+	
+	//private SortedListOf<ContactData> cachedContacts;
 
 
 	public enum FormButtons {
@@ -31,27 +32,40 @@ public class ContactHelper extends HelperBase {
 		}
 	}
 	
-	/*public SortedListOf<ContactData> getContacts() {
-		if (cachedContacts == null) {
-			cachedContacts = rebuildContactCache();
-		}
-		return cachedContacts;
+	public ContactHelper createContact(ContactData contact) {
+		manager.navigateTo().contactAddNewPage();
+		fillContactForm(contact,CREATION);
+		submitContactCreation();
+		returnToHomePage();
+		//update model
+		manager.getModel().addContact(contact);		
+		return this;		
 	}
 	
-	private SortedListOf<ContactData> rebuildContactCache() {
-		SortedListOf<ContactData> cachedContacts = new SortedListOf<ContactData>();
-		*/
+	public ContactHelper deleteContact(int index, int indexTable) {
+		selectContactByIndex(index);
+		identifierContactByIndexes(index, indexTable);
+		selectButtonByValue("Delete");
+		returnToHomePage();
+		manager.getModel().removeContact(index);		
+		return this;
+
+	}
 	
-	public SortedListOf<ContactData> getContacts() {
-		if (cachedContacts == null){
-			rebuildCache();	
-		}
-		return cachedContacts;	
+	public ContactHelper modifyContact(int index,ContactData  contact) {
+		manager.navigateTo().mainPage();
+		initContactModification(index, FormButtons.EDIT.getCode());
+		fillContactForm(contact,MODIFICATION);
+		selectButtonByValue("Update");
+		returnToHomePage();
+		manager.getModel().removeContact(index).addContact(contact);
+		return this;
 	}
 
-
-	private void rebuildCache() {
-		cachedContacts = new SortedListOf<ContactData>();
+	//================================================================================
+	
+	public SortedListOf<ContactData> getUiContacts() {
+		SortedListOf<ContactData> contacts = new SortedListOf<ContactData>();
 		manager.navigateTo().mainPage();
 		int i = 2;
 		int total = findElements(By.name("selected[]")).size();
@@ -64,42 +78,30 @@ public class ContactHelper extends HelperBase {
 
 			//remove spaces
 			contact.trimHome();
-			cachedContacts.add(contact);
+			contacts.add(contact);
 			i++;
 		}
+		return contacts;
 	}
 	
-	public ContactHelper createContact(ContactData contact) {
-		manager.navigateTo().contactAddNewPage();
-		fillContactForm(contact,CREATION);
-		submitContactCreation();
-		returnToHomePage();
-		rebuildCache();
-		return this;		
-	}
-	
-	public ContactHelper deleteContact(int index, int indexTable) {
-		selectContactByIndex(index);
-		identifierContactByIndexes(index, indexTable);
-		selectButtonByValue("Delete");
-		returnToHomePage();
-		rebuildCache();
-		return this;
+	public ContactData readContactByIndex(int index) {
+		//returnToHomePage();
+		manager.navigateTo().mainPage(); //selectContactByIndex(index);
+		ContactData contact = new ContactData().withFirstName(getContactAttributeValue(index, LAST_NAME_COLUMN))
+				.withLastName(getContactAttributeValue(index, FIRST_NAME_COLUMN))
+				.withEmail1(getContactAttributeValue(index, EMAIL_COLUMN))
+				.withHome(getContactAttributeValue(index, HOME_COLUMN));	
 
-	}
-	
-	public ContactHelper modifyContact(int index,ContactData  contact) {
-		manager.navigateTo().mainPage();
-		initContactModification(index, FormButtons.EDIT.getCode());
-		fillContactForm(contact,MODIFICATION);
-		selectButtonByValue("Update");
-		returnToHomePage();
-		rebuildCache();
-		return this;
+		/*WebElement firstName = driver.findElement(By.xpath("//input[2]"));
+		contact.setFirstname(firstName.getAttribute("value"));
+
+		WebElement lastName = driver.findElement(By.xpath("//input[3]"));
+		contact.setLastname(lastName.getAttribute("value"));*/
+
+		return contact;
 	}
 
-	//================================================================================
-	
+		
 	public ContactHelper(ApplicationManager manager) {
 		super(manager);
 	}
@@ -142,13 +144,11 @@ public class ContactHelper extends HelperBase {
 
 	public ContactHelper submitContactCreation() {
 		click(By.name("submit"));
-		cachedContacts = null;
 		return this;
 	}
 
 	public ContactHelper modifyContactCreation() {
 		click(By.name("modifiy"));
-		cachedContacts = null;
 		return this;
 	}
 

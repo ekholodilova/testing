@@ -1,10 +1,12 @@
 package com.example.tests;
 
 public class ContactData implements Comparable<ContactData> {
+	private String id;
 	private String firstname;
 	private String lastname;
 	private String address;
 	private String home;
+	
 	public String getHome() {
 		return home;
 	}
@@ -75,9 +77,9 @@ public class ContactData implements Comparable<ContactData> {
 	
 	protected String getStringViewForCompare() {
 		StringBuffer sb = new StringBuffer("");
-		sb.append(this.firstname);
-		sb.append(",");
 		sb.append(this.lastname);
+		sb.append(",");
+		sb.append(this.firstname);
 		sb.append(",");
 		sb.append(this.email1);
 		sb.append(",");
@@ -101,6 +103,12 @@ public class ContactData implements Comparable<ContactData> {
 		return this.getStringViewForCompare().toLowerCase()
 				.compareTo(other.getStringViewForCompare().toLowerCase());
 	}
+	
+	public ContactData withId(String id) {
+		this.id = id;
+		return this;
+	}
+
 	
 	public ContactData withFirstName(String firstname) {
 		this.firstname = firstname;
@@ -208,8 +216,77 @@ public class ContactData implements Comparable<ContactData> {
 		}
 	}
 
+	public String getId() {
+		return id;
+	}
+	
 	public String getFirstname() {
 		return firstname;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public void setWork(String work) {
+		this.work = work;
+	}
+
+
+	public void setEmail1(String email1) {
+		this.email1 = email1;
+	}
+
+	public void setEmail2(String email2) {
+		this.email2 = email2;
+	}
+
+	public void setBday(String bday) {
+		this.bday = bday;
+	}
+
+	public void setBmonth(String bmonth) {
+		this.bmonth = bmonth;
+	}
+
+	public void setByear(String byear) {
+		this.byear = byear;
+	}
+
+	public void setNewgroup(String newgroup) {
+		this.newgroup = newgroup;
+	}
+
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+	public void setPhone2(String phone2) {
+		this.phone2 = phone2;
+	}
+
+	public void setEmaildoman1(String emaildoman1) {
+		this.emaildoman1 = emaildoman1;
+	}
+
+	public void setEmaildoman2(String emaildoman2) {
+		this.emaildoman2 = emaildoman2;
 	}
 
 	public String getLastname() {
@@ -255,5 +332,5 @@ public class ContactData implements Comparable<ContactData> {
 	public String getPhone2() {
 		return phone2;
 	}
-
+	
 }
